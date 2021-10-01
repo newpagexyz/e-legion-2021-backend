@@ -127,4 +127,39 @@ begin
     return 0;
 end;
 // 
+/*
+    Delete team member
+*/
+create function delete_team_member(
+    `oid_val`     INT UNSIGNED,
+    `tid_val`     INT UNSIGNED,
+    `mid_val`     INT UNSIGNED
+)
+RETURNS int
+begin
+    IF( EXISTS(SELECT `id` from `team` where `id`=tid_val and `oid`=oid_val) AND tid_val<>oid_val AND EXISTS(SELECT `id` from `team_members` where `uid`=oid_val) ) 
+    THEN
+        DELETE FROM `team_members` WHERE `tid`=tid_valA AND `uid`=oid_val;
+        return 1;
+    END IF;
+    return 0;
+end;
+// 
+/*
+    Check auth
+*/
+create function check_auth(
+    EMAIL VARCHAR(70),
+    PASSWORD_val CHAR(64)
+)
+RETURNS int UNSIGNED
+begin
+    DECLARE UID INT UNSIGNED;
+    IF( EXISTS(SELECT id UID FROM `users` WHERE `email`=EMAIL AND `password`=SHA2(PASSWORD_val, 256)) ) 
+    THEN
+        return (SELECT id UID FROM `users` WHERE `email`=EMAIL AND `password`=SHA2(PASSWORD_val, 256));
+    END IF;
+    return 0;
+end;
+// 
 
