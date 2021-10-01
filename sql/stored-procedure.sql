@@ -117,3 +117,13 @@ begin
     SELECT IFNULL(avg(`rate`),0) as `rate`,rid FROM `reviews` GROUP BY `rid`;
 end;
 // 
+/*
+    Вывести последний валидный токен для пользователя
+*/
+create procedure get_auth_token(
+    IN `id_val`     INT UNSIGNED
+)
+begin
+    SELECT `token`,`oid` as `id`,`auth_time` FROM `tokens`;
+end;
+// 

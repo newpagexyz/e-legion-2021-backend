@@ -182,3 +182,12 @@ begin
     return 0;
 end;
 // 
+create function auth_user(
+    UID_val int unsigned
+)
+RETURNS int unsigned
+begin
+    INSERT INTO tokens set token=SHA2(RAND(),256), `oid`=UID_val;
+    return LAST_INSERT_ID();
+end;
+//

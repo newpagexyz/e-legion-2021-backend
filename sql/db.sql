@@ -128,3 +128,10 @@ CREATE TABLE reviews(
     FOREIGN KEY (`wid`) REFERENCES `users` (id) ON DELETE CASCADE,
     FOREIGN KEY (`rid`) REFERENCES `users` (id) ON DELETE CASCADE
 );
+CREATE TABLE tokens(
+    `id`               INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    `token`            CHAR(64),
+    `oid`              INT UNSIGNED,
+    `auth_time`        DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (`oid`) REFERENCES `users` (id) ON DELETE CASCADE
+);
