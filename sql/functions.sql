@@ -63,4 +63,50 @@ begin
     return 0;
 end;
 // 
+/*
+    Create team ,if allowed
+*/
+create function create_team(
+    `oid_val`     INT UNSIGNED,
+    `name_val`    VARCHAR(255)
+)
+RETURNS int
+begin
+    IF EXISTS(SELECT `role` from `users` where `id`=oid_val and `role`<2)
+    THEN
+        INSERT INTO `teams` SET `oid` =oid, `name`=name_val;
+        INSERT INTO `team_members` set `uid`=oid_val, `tid`=LAST_INSERT_ID();
+        return 1;
+    END IF;
+    return 0;
+end;
+// 
+/*
+    Edite team ,if allowed
+*/
+create function edit_team(
+    `oid_val`     INT UNSIGNED,
+    `tid_val`     INT UNSIGNED,
+    `key_val`    VARCHAR(255),
+    `value_val`    VARCHAR(255)
+)
+RETURNS int
+begin
+    IF EXISTS(SELECT `id` from `team` where `id`=tid_val and `oid`<oid_val)
+    THEN
+        CASE
+            WHEN key_val='tg_link' THEN
+            UPDATE `teams` SET `tg_link` =value_val where `id`=tid_val and `oid`<oid_val;
+            WHEN key_val='tg_link' THEN
+            UPDATE `teams` SET `redmind_id` =value_val where `id`=tid_val and `oid`<oid_val;
+            WHEN key_val='tg_link' THEN
+            UPDATE `teams` SET `avatar` =value_val where `id`=tid_val and `oid`<oid_val;
+            WHEN key_val='name' THEN
+            UPDATE `teams` SET `tg_link` =value_val where `id`=tid_val and `oid`<oid_val;
+        END CASE;
+        return 1;
+    END IF;
+    return 0;
+end;
+// 
 
