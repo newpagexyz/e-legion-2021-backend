@@ -108,3 +108,23 @@ CREATE TABLE team_members(
     FOREIGN KEY (`tid`) REFERENCES `teams` (id) ON DELETE CASCADE,
     FOREIGN KEY (`uid`) REFERENCES `users` (id) ON DELETE CASCADE
 );
+/*
+    Таблица отзывов:
+        id              - внутренний иденитификатор отзыва
+        wid             - id того кто пишет отзыв
+        rid             - id того про кого пишут отзыв
+        rate            - оценка отзыва
+        title           - заголовок отзыва
+        body            - тело отзыва
+*/
+CREATE TABLE reviews(
+    `id`               INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    `wid`              INT UNSIGNED,
+    `rid`              INT UNSIGNED,   
+    `rate`             TINYINT(1),   
+    `create_time`      DATETIME DEFAULT CURRENT_TIMESTAMP,
+    `title`            VARCHAR(255),
+    `body`             TEXT,
+    FOREIGN KEY (`wid`) REFERENCES `users` (id) ON DELETE CASCADE,
+    FOREIGN KEY (`rid`) REFERENCES `users` (id) ON DELETE CASCADE
+);
