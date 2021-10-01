@@ -73,3 +73,17 @@ begin
   SELECT `teams`.`name`,`teams`.`avatar` FROM `teams` INNER JOIN `team_members` ON `team_members`.`tid`=`teams`.`id` WHERE `team_members`.`uid`= UID;
 end;
 //
+/*
+    Вывести все проекты члена
+*/
+create procedure get_team_info(
+    IN `UID` INT UNSIGNED,
+    IN `TID` INT UNSIGNED
+)
+begin
+    IF EXISTS(SELECT `id` from `team_members` where `uid`=UID) 
+    THEN
+        SELECT `oid`,`tg_link`,`redmind_id`,`avatar`,`name` FROM `teams` WHERE `teams`.`tid`= TID;
+    END IF;
+end;
+//
