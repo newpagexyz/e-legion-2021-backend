@@ -79,3 +79,32 @@ CREATE TABLE users(
     `vacation_end`     DATE,
     `birth_date`       DATE
 );
+/*
+    Таблица команд:
+        id          - внутренний идентификатор команды
+        oid         - идентификатор хозяина команды
+        tg_link     - ссылка на чат в телеграм
+        redmind_id  - идентификатор в системе redmind
+        avatar      - название файла аватарки команды
+        name        - название команды
+*/
+CREATE TABLE teams(
+    `id`               INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    `oid`              INT UNSIGNED,
+    `tg_link`          VARCHAR(255),
+    `redmind_id`       VARCHAR(255),
+    `avatar`           CHAR(70),
+    `name`             VARCHAR(255),
+    FOREIGN KEY (`oid`) REFERENCES `users` (id) ON DELETE CASCADE
+);
+/*
+    Таблица членов команд:
+        tid - идентификатор команды
+        uid - идентификатор члена команды
+*/
+CREATE TABLE team_members(
+    `tid`              INT UNSIGNED,
+    `uid`              INT UNSIGNED,
+    FOREIGN KEY (`tid`) REFERENCES `teams` (id) ON DELETE CASCADE,
+    FOREIGN KEY (`uid`) REFERENCES `users` (id) ON DELETE CASCADE
+);
