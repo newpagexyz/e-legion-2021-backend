@@ -92,18 +92,36 @@ create function edit_team(
 )
 RETURNS int
 begin
-    IF EXISTS(SELECT `id` from `team` where `id`=tid_val and `oid`<oid_val)
+    IF EXISTS(SELECT `id` from `team` where `id`=tid_val and `oid`=oid_val)
     THEN
         CASE
             WHEN key_val='tg_link' THEN
-            UPDATE `teams` SET `tg_link` =value_val where `id`=tid_val and `oid`<oid_val;
+            UPDATE `teams` SET `tg_link` =value_val where `id`=tid_val and `oid`=oid_val;
             WHEN key_val='tg_link' THEN
-            UPDATE `teams` SET `redmind_id` =value_val where `id`=tid_val and `oid`<oid_val;
+            UPDATE `teams` SET `redmind_id` =value_val where `id`=tid_val and `oid`=oid_val;
             WHEN key_val='tg_link' THEN
-            UPDATE `teams` SET `avatar` =value_val where `id`=tid_val and `oid`<oid_val;
+            UPDATE `teams` SET `avatar` =value_val where `id`=tid_val and `oid`=oid_val;
             WHEN key_val='name' THEN
-            UPDATE `teams` SET `tg_link` =value_val where `id`=tid_val and `oid`<oid_val;
+            UPDATE `teams` SET `tg_link` =value_val where `id`=tid_val and `oid`=oid_val;
         END CASE;
+        return 1;
+    END IF;
+    return 0;
+end;
+// 
+/*
+    Add team member
+*/
+create function add_team_member(
+    `oid_val`     INT UNSIGNED,
+    `tid_val`     INT UNSIGNED,
+    `mid_val`     INT UNSIGNED
+)
+RETURNS int
+begin
+    IF( EXISTS(SELECT `id` from `team` where `id`=tid_val and `oid`=oid_val) AND tid_val<>oid_val AND NOT EXISTS(SELECT `id` from `team_members` where `oid`=oid_val) ) 
+    THEN
+        INSERT INTO `team_members` SET `tid`=tid_val, `oid`=oid_val;
         return 1;
     END IF;
     return 0;
