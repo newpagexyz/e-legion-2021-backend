@@ -162,4 +162,23 @@ begin
     return 0;
 end;
 // 
-
+/*
+    Add review
+*/
+create function add_review(
+    `wid_val`              INT UNSIGNED,
+    `rid_val`              INT UNSIGNED,   
+    `rate_val`             TINYINT(1),   
+    `title_val`            VARCHAR(255),
+    `body_val`             TEXT
+)
+RETURNS int UNSIGNED
+begin
+    if(wid_val<>rid_val)
+    THEN
+       INSERT INTO `reviews` SET `wid`=wid_val,`rid`=rid_val,`rate`=rate_val,`title`=title_val,`body`=body_val;
+        return 1;
+   end if;
+    return 0;
+end;
+// 

@@ -87,3 +87,33 @@ begin
     END IF;
 end;
 //
+/*
+    Вывести оценки пользователя
+*/
+create procedure get_user_reviews(
+    IN `UID` INT UNSIGNED
+)
+begin
+   SELECT `id`,`wid`,`rid`,`rate`,`create_time`,`title`,`body` FROM `reviews` WHERE rid=UID;
+end;
+//
+/*
+    Вывести рейтинг пользователя
+*/
+create procedure get_user_rating(
+    IN `uid_val`     INT UNSIGNED
+)
+begin
+    SELECT IFNULL(avg(`rate`),0) as `rate` FROM `reviews` WHERE `rid`=uid_val;
+end;
+// 
+/*
+    Вывести пользователей, отсортированных по рейтингу
+*/
+create procedure sort_user_rating(
+    IN `uid_val`     INT UNSIGNED
+)
+begin
+    SELECT IFNULL(avg(`rate`),0) as `rate`,rid FROM `reviews` GROUP BY `rid`;
+end;
+// 
