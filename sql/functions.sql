@@ -1,3 +1,6 @@
+/*
+    Edit user profile
+*/
 create function edit_user_info(
     `UID`        INT UNSIGNED,
     `KEY_val`    VARCHAR(255),
@@ -31,6 +34,33 @@ begin
             return "invalid key";
     END CASE; 
     return "ok";
+end;
+// 
+/*
+    Change password, or set if not
+*/
+create function update_password(
+    `UID`        INT UNSIGNED,
+    `old_pass`    VARCHAR(255),
+    `new_pass`  VARCHAR(255)
+)
+RETURNS int
+begin
+    IF(old_pass=new_pass)
+        THEN
+            IF EXISTS(SELECT `password` FROM `users` where `password`=SHA2(old_pass, 256) AND `id`=UID)
+            THEN
+                UPDATE `users` SET `password` = SHA2(new_pass, 256) WHERE `id`=UID;
+                return 1;
+            ELSE 
+                IF EXISTS(SELECT `password` FROM `users` where `password`='' OR `password` is NULL  AND `id`=UID)
+                    THEN
+                        UPDATE `users` SET `password` = SHA2(new_pass, 256) WHERE `id`=UID;
+                        return 1;
+                END IF;
+            END IF;
+    END IF;
+    return 0;
 end;
 // 
 
