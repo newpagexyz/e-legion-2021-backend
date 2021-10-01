@@ -119,9 +119,9 @@ create function add_team_member(
 )
 RETURNS int
 begin
-    IF( EXISTS(SELECT `id` from `team` where `id`=tid_val and `oid`=oid_val) AND tid_val<>oid_val AND NOT EXISTS(SELECT `id` from `team_members` where `oid`=oid_val) ) 
+    IF( EXISTS(SELECT `id` from `team` where `id`=tid_val and `oid`=oid_val) AND tid_val<>oid_val AND NOT EXISTS(SELECT `id` from `team_members` where `uid`=oid_val) ) 
     THEN
-        INSERT INTO `team_members` SET `tid`=tid_val, `oid`=oid_val;
+        INSERT INTO `team_members` SET `tid`=tid_val, `uid`=oid_val;
         return 1;
     END IF;
     return 0;
