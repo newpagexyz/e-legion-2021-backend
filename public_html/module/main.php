@@ -157,6 +157,22 @@ class Main{
         }
         return false;
     }
+    function get_users_rating($type_select=3){
+        /*
+            Вывести список пользователя
+        */
+        $ret=$this->mysqli->query("call sort_user_rating();");
+        if($ret->num_rows){
+            $ans=array();
+            while($re=$ret->fetch_assoc()){
+                array_push($ans,$re);
+            }
+            $ret->free();
+            $this->clear_mysqli();
+            return $ans;
+        }
+        return false;
+    }
     function get_project_members($pid){
         /*
             Вывести список пользователя

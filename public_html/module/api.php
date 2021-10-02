@@ -211,6 +211,15 @@
                     echo json_encode(array("error"=>array('status'=>true,"code"=>$Main->status,"description"=>$Main->status_text),"body"=>$ans));
                 }
             break;
+            case "get_users_rating":
+                $ans=$Main->get_users_rating($role);
+                if($ans!==false){
+                    echo json_encode(array("error"=>array('status'=>false),"body"=>$ans));
+                }
+                else{
+                    echo json_encode(array("error"=>array('status'=>true,"code"=>$Main->status,"description"=>$Main->status_text),"body"=>$ans));
+                }
+            break;
             case "get_team_info":
                 if(isset($_GET['tid'])){
                     $pid=$_GET['tid'];

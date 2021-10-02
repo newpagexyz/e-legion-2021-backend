@@ -111,7 +111,6 @@ end;
     Вывести пользователей, отсортированных по рейтингу
 */
 create procedure sort_user_rating(
-    IN `uid_val`     INT UNSIGNED
 )
 begin
     SELECT IFNULL(avg(`rate`),0) as `rate`,rid FROM `reviews` GROUP BY `rid`;
