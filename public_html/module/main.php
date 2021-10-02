@@ -388,6 +388,57 @@ class Main{
         }
         return false;
     }
+    function create_vote($name,$payload){
+        $query="INSERT INTO `votes` SET `name`='".$name."' `cxema`='".$this->mysqli->real_escape_string($payload)."';";
+        $ret=$this->mysqli->query($query);
+        $id=$this->mysqli->insert_id;
+        $ret->free();
+        $object=json_decode($payload,true);
+        $query="CREATE TABLE vote_".$id;
+        $i=1;
+        foreach($object as $question){
+            $query=$query." answer_".$i." VARCHAR(255),";
+            $i++;
+        }
+        $query=$query." uid INT UNSIGNED UNiQUE;";
+        return false;
+    }
+    function get_votes(){
+        $query="SELECT * FROM `votes` ORDER BY `id` DESC";
+        $ret=$this->mysqli->query($query);
+        $ans=array();
+        if($ret->num_rows){
+            while($re=$ret->fetch_assoc()){
+                array_push($ans,$re);
+            }
+            $ret->free();
+            $this->clear_mysqli();
+        }
+        return $ans;
+    }
+    function get_vote_schema($id){
+        $query="SELECT * FROM `votes` ORDER BY `id` DESC";
+        $ret=$this->mysqli->query($query);;
+        if($ret->num_rows){
+            if($re=$ret->fetch_assoc()){
+                return $re;
+            }
+            $ret->free();
+            $this->clear_mysqli();
+        }
+        return false;
+    }
+    function vote($id,$payload){
+        $object=json_decode($payload,true);
+        $query="INSERT INTO vote_".intval($id);
+        $i=1;
+        foreach($object as $question){
+            $query=$query." answer_".$i."='$question',";
+            $i++;
+        }
+        $query=$query." uid =".$this->id.";";
+        return false;
+    }
     private function clear_mysqli(){
         while($this->mysqli->next_result()) $this->mysqli->store_result();
     }

@@ -153,3 +153,8 @@ CREATE TABLE event_members(
     FOREIGN KEY (`cid`) REFERENCES `users` (id) ON DELETE CASCADE,
     FOREIGN KEY (`uid`) REFERENCES `users` (id) ON DELETE CASCADE
 ); 
+CREATE TABLE `votes`(
+    `id`            INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    `name`          VARCHAR(255),
+    `cxema`         TEXT
+);

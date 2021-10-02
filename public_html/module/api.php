@@ -511,6 +511,93 @@
                     echo json_encode(array("error"=>array('status'=>true,"code"=>403,"description"=>"Invalid token")));
                 }
             break;
+            case "create_vote":
+                if(isset($_GET['name']) AND isset($_GET['payload'])){
+                    $name=$_GET['name'];
+                    $payload=$_GET['payload'];
+                }
+                else if(isset($_POST['name']) AND isset($_POST['payload'])){
+                    $name=$_POST['name'];
+                    $payload=$_POST['payload'];
+                }
+                else{
+                    echo json_encode(array("error"=>array('status'=>true,"code"=>400,"description"=>"Set name and payload")));
+                }
+                if($Main->check_token($token)){
+                    $ans=$Main->create_vote($name,$payload);
+                    if($ans!==false){
+                        echo json_encode(array("error"=>array('status'=>false),"body"=>$ans));
+                    }
+                    else{
+                        echo json_encode(array("error"=>array('status'=>true,"code"=>$Main->status,"description"=>$Main->status_text),"body"=>$ans));
+                    }
+                }
+                else{
+                    echo json_encode(array("error"=>array('status'=>true,"code"=>403,"description"=>"Invalid token")));
+                }
+            break;
+            case "vote":
+                if(isset($_GET['id']) AND isset($_GET['payload'])){
+                    $id=$_GET['id'];
+                    $payload=$_GET['payload'];
+                }
+                else if(isset($_POST['id']) AND isset($_POST['payload'])){
+                    $id=$_POST['id'];
+                    $payload=$_POST['payload'];
+                }
+                else{
+                    echo json_encode(array("error"=>array('status'=>true,"code"=>400,"description"=>"Set name and payload")));
+                }
+                if($Main->check_token($token)){
+                    $ans=$Main->create_vote($id,$payload);
+                    if($ans!==false){
+                        echo json_encode(array("error"=>array('status'=>false),"body"=>$ans));
+                    }
+                    else{
+                        echo json_encode(array("error"=>array('status'=>true,"code"=>$Main->status,"description"=>$Main->status_text),"body"=>$ans));
+                    }
+                }
+                else{
+                    echo json_encode(array("error"=>array('status'=>true,"code"=>403,"description"=>"Invalid token")));
+                }
+            break;
+            case "get_vote_schema":
+                if(isset($_GET['id'])){
+                    $id=$_GET['id'];
+                }
+                else if(isset($_POST['id'])){
+                    $id=$_POST['id'];
+                }
+                else{
+                    echo json_encode(array("error"=>array('status'=>true,"code"=>400,"description"=>"Set vote id")));
+                }
+                if($Main->check_token($token)){
+                    $ans=$Main->create_team($id);
+                    if($ans!==false){
+                        echo json_encode(array("error"=>array('status'=>false),"body"=>$ans));
+                    }
+                    else{
+                        echo json_encode(array("error"=>array('status'=>true,"code"=>$Main->status,"description"=>$Main->status_text),"body"=>$ans));
+                    }
+                }
+                else{
+                    echo json_encode(array("error"=>array('status'=>true,"code"=>403,"description"=>"Invalid token")));
+                }
+            break;
+            case "get_votes":
+                if($Main->check_token($token)){
+                    $ans=$Main->get_votes();
+                    if($ans!==false){
+                        echo json_encode(array("error"=>array('status'=>false),"body"=>$ans));
+                    }
+                    else{
+                        echo json_encode(array("error"=>array('status'=>true,"code"=>$Main->status,"description"=>$Main->status_text),"body"=>$ans));
+                    }
+                }
+                else{
+                    echo json_encode(array("error"=>array('status'=>true,"code"=>403,"description"=>"Invalid token")));
+                }
+            break;
             case "delete_team_member":
                 if(isset($_GET['tid']) AND isset($_GET['mid'])){
                     $tid=$_GET['tid'];
