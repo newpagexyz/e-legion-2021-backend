@@ -273,9 +273,22 @@ class Main{
     }
     function delete_team_member($tid,$mid){
         /*
-            Добавить пользователя в команду
+            Удалить пользователя из команды
         */
         $ret=$this->mysqli->query("SELECT delete_team_member(".$this->id.",'".intval($tid)."','".intval($mid)."')  as ans;");
+        if($ret->num_rows){
+            if($re=$ret->fetch_assoc()){
+                $ret->free();
+                return $re['ans'];
+            }
+        }
+        return false;
+    }
+    function delete_team($tid){
+        /*
+            Добавить пользователя в команду
+        */
+        $ret=$this->mysqli->query("SELECT delete_team(".$this->id.",'".intval($tid)."')  as ans;");
         if($ret->num_rows){
             if($re=$ret->fetch_assoc()){
                 $ret->free();

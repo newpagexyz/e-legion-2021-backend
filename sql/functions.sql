@@ -144,6 +144,23 @@ begin
     END IF;
     return 0;
 end;
+//
+/*
+    Delete team
+*/
+create function delete_team(
+    `oid_val`     INT UNSIGNED,
+    `tid_val`     INT UNSIGNED
+)
+RETURNS int
+begin
+    IF( EXISTS(SELECT `id` from `teams` where ((`id`=tid_val) and (`oid`=oid_val)))) 
+    THEN
+        DELETE FROM `teams` WHERE `id`=tid_val AND `oid`=oid_val;
+        return 1;
+    END IF;
+    return 0;
+end;
 // 
 /*
     Add review

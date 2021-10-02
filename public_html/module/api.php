@@ -380,6 +380,30 @@
                     echo json_encode(array("error"=>array('status'=>true,"code"=>403,"description"=>"Invalid token")));
                 }
             break;
+            case "delete_team":
+                if(isset($_GET['tid'])){
+                    $tid=$_GET['tid'];
+                }
+                else if(isset($_POST['tid'])){
+                    $tid=$_POST['tid'];
+                }
+                else{
+                    echo json_encode(array("error"=>array('status'=>true,"code"=>400,"description"=>"Set team id and member id")));
+                    exit;
+                }
+                if($Main->check_token($token)){
+                    $ans=$Main->delete_team($tid);
+                    if($ans!==false){
+                        echo json_encode(array("error"=>array('status'=>false),"body"=>$ans));
+                    }
+                    else{
+                        echo json_encode(array("error"=>array('status'=>true,"code"=>$Main->status,"description"=>$Main->status_text),"body"=>$ans));
+                    }
+                }
+                else{
+                    echo json_encode(array("error"=>array('status'=>true,"code"=>403,"description"=>"Invalid token")));
+                }
+            break;
             case "add_team_member":
                 if(isset($_GET['tid']) AND isset($_GET['mid'])){
                     $tid=$_GET['tid'];
