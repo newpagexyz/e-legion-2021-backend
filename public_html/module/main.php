@@ -84,6 +84,44 @@ class Main{
         }
         return $ans;
     }
+    function add_event($name,$description,$type,$place,$start_time,$end_time){
+        $ret=$this->mysqli->query("SELECT add_event(".$this->id.",'".$this->mysqli->real_escape_string($name)."','".$this->mysqli->real_escape_string($description)."','".
+        $this->mysqli->real_escape_string($type)."','".$this->mysqli->real_escape_string($place)."','".
+        $this->mysqli->real_escape_string($start_time)."','".$this->mysqli->real_escape_string($end_time)."',)  as ans;");
+        if($ret->num_rows){
+            if($re=$ret->fetch_assoc()){
+                $ret->free();
+                return $re['ans'];
+            }
+        }
+        return false;
+    }
+    function add_event_member($tid,$mid){
+        /*
+            Добавить пользователя в событие
+        */
+        $ret=$this->mysqli->query("SELECT add_event_member(".$this->id.",'".intval($tid)."','".intval($mid)."')  as ans;");
+        if($ret->num_rows){
+            if($re=$ret->fetch_assoc()){
+                $ret->free();
+                return $re['ans'];
+            }
+        }
+        return false;
+    }
+    function delete_event_member($tid,$mid){
+        /*
+            Удалить пользователя из события
+        */
+        $ret=$this->mysqli->query("SELECT delete_event_member(".$this->id.",'".intval($tid)."','".intval($mid)."')  as ans;");
+        if($ret->num_rows){
+            if($re=$ret->fetch_assoc()){
+                $ret->free();
+                return $re['ans'];
+            }
+        }
+        return false;
+    }
     function get_team_info($id){
         /*
             Выдаст информацию о команде

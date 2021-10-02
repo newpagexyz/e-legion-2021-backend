@@ -243,6 +243,95 @@
                     }
                 }
             break;
+            case "add_event":
+                if(isset($_GET['name']) AND isset($_GET['description']) AND isset($_GET['type']) AND isset($_GET['place'])  AND isset($_GET['start_time'])  AND isset($_GET['end_time'])){
+                    $name=$_GET['name'];
+                    $description=$_GET['description'];
+                    $type=$_GET['type'];
+                    $place=$_GET['place'];
+                    $start_time=$_GET['start_time'];
+                    $end_time=$_GET['end_time'];
+                }
+                else if(isset($_POST['name']) AND isset($_POST['description']) AND isset($_POST['type']) AND isset($_POST['place'])  AND isset($_POST['start_time'])  AND isset($_POST['end_time'])){
+                    $name=$_POST['name'];
+                    $description=$_POST['description'];
+                    $type=$_POST['type'];
+                    $place=$_POST['place'];
+                    $start_time=$_POST['start_time'];
+                    $end_time=$_POST['end_time'];
+                }
+                else{
+                    http_response_code(400);
+                    echo json_encode(array("error"=>array('status'=>true,"code"=>400,"description"=>"Fill all fields")));
+                    exit;
+                }
+                if($token){
+                    if($Main->check_token($token)){
+                        $ans=$Main->add_event($name,$description,$type,$place,$start_time,$end_time);
+                        if($ans!==false){
+                            echo json_encode(array("error"=>array('status'=>false),"body"=>$ans));
+                        }
+                        else{
+                            echo json_encode(array("error"=>array('status'=>true,"code"=>$Main->status,"description"=>$Main->status_text),"body"=>$ans));
+                        }
+                    }
+                    else{
+                        echo json_encode(array("error"=>array('status'=>true,"code"=>403,"description"=>"Invalid token")));    
+                    }
+                }
+            break;
+            case "add_event_member":
+                if(isset($_GET['eid']) AND isset($_GET['uid'])){
+                    $tid=$_GET['eid'];
+                    $mid=$_GET['uid'];
+                }
+                else if(isset($_POST['eid']) AND isset($_POST['uid'])){
+                    $tid=$_POST['eid'];
+                    $mid=$_POST['uid'];
+                }
+                else{
+                    echo json_encode(array("error"=>array('status'=>true,"code"=>400,"description"=>"Set team id and member id")));
+                    exit;
+                }
+                if($Main->check_token($token)){
+                    $ans=$Main->add_event_member($eid,$uid);
+                    if($ans!==false){
+                        echo json_encode(array("error"=>array('status'=>false),"body"=>$ans));
+                    }
+                    else{
+                        echo json_encode(array("error"=>array('status'=>true,"code"=>$Main->status,"description"=>$Main->status_text),"body"=>$ans));
+                    }
+                }
+                else{
+                    echo json_encode(array("error"=>array('status'=>true,"code"=>403,"description"=>"Invalid token")));
+                }
+            break;
+            case "delete_event_member":
+                if(isset($_GET['eid']) AND isset($_GET['uid'])){
+                    $tid=$_GET['eid'];
+                    $mid=$_GET['uid'];
+                }
+                else if(isset($_POST['eid']) AND isset($_POST['uid'])){
+                    $tid=$_POST['eid'];
+                    $mid=$_POST['uid'];
+                }
+                else{
+                    echo json_encode(array("error"=>array('status'=>true,"code"=>400,"description"=>"Set team id and member id")));
+                    exit;
+                }
+                if($Main->check_token($token)){
+                    $ans=$Main->delete_event_member($eid,$uid);
+                    if($ans!==false){
+                        echo json_encode(array("error"=>array('status'=>false),"body"=>$ans));
+                    }
+                    else{
+                        echo json_encode(array("error"=>array('status'=>true,"code"=>$Main->status,"description"=>$Main->status_text),"body"=>$ans));
+                    }
+                }
+                else{
+                    echo json_encode(array("error"=>array('status'=>true,"code"=>403,"description"=>"Invalid token")));
+                }
+            break;
             case "get_users":
                 $role=3;
                 if(isset($_GET['role'])){

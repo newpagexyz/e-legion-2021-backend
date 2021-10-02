@@ -136,3 +136,20 @@ CREATE TABLE tokens(
     `auth_time`        DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (`oid`) REFERENCES `users` (id) ON DELETE CASCADE
 );
+CREATE TABLE calendar(
+    `id`            INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    `name`          VARCHAR(255),
+    `description`   VARCHAR(255),
+    `type`          VARCHAR(255),
+    `oid`           INT UNSIGNED,
+    `place`         VARCHAR(255),
+    `start_time`    DATETIME,
+    `end_time`      DATETIME,
+    FOREIGN KEY (`oid`) REFERENCES `users` (id) ON DELETE CASCADE
+);
+CREATE TABLE event_members(
+    `cid`           INT UNSIGNED,
+    `uid`           INT UNSIGNED,
+    FOREIGN KEY (`cid`) REFERENCES `users` (id) ON DELETE CASCADE,
+    FOREIGN KEY (`uid`) REFERENCES `users` (id) ON DELETE CASCADE
+); 

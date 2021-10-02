@@ -191,3 +191,42 @@ begin
     return LAST_INSERT_ID();
 end;
 //
+create function add_event_member(
+    UID_VAL      INT UNSIGNED,
+    EID_VAL      INT UNSIGNED
+)
+RETURNS int unsigned
+begin
+    INSERT INTO `event_members` SET `cid`=cid_val, `uid`=UID_VAL;
+    return 1;
+end;
+//
+create function delete_event_member(
+    UID_VAL      INT UNSIGNED,
+    EID_VAL      INT UNSIGNED
+)
+RETURNS int unsigned
+begin
+    DELETE FROM `event_members` WHERE `cid`=cid_val AND `uid`=UID_VAL;
+    return 1;
+end;
+//
+create function add_event(
+    UID_VAL      INT UNSIGNED,
+    NAME_VAL     VARCHAR(255),
+    DESC_VAL     VARCHAR(255),
+    TYPE_VAL     VARCHAR(255),
+    OID_VAL      INT UNSIGNED,
+    PLACE_VAL    VARCHAR(255),
+    START_VAL    DATETIME,
+    END_VAL      DATETIME
+)
+RETURNS int unsigned
+begin
+    DECLARE cid_val INT UNSIGNED;
+    INSERT INTO `calendar` SET `oid`=UID_VAL,`name`=NAME_VAL,`description`=DESC_VAL,`type`=TYPE_VAL,`place`=PLACE_VAL,`start_time`=START_VAL,`end_time`=END_VAL;
+    SET cid_val =LAST_INSERT_ID();
+    INSERT INTO `event_members` SET `cid`=cid_val, `uid`=UID_VAL;
+    return cid_val;
+end;
+//
