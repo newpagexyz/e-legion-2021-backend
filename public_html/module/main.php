@@ -161,6 +161,29 @@ class Main{
         }
         return false;
     }
+    function get_issues($id){
+        $ret=$this->get_team_info($id);
+        if($ret['redmind_id']){
+            $payload=file_get_contents("http://demo.redmine.org/issues.json?key=key&project_id=".$ret['redmind_id']);
+            $arr=json_decode($payload,true);
+            $arr_ans=array();
+            foreach($arr['issues'] as $ans){
+                array_push($arr_ans,array("name"=>$ans['subject'],"description"=>$ans['description'],"add_time"=>$ans['created_on']));
+            }
+        }
+        return $arr_ans;
+    }
+    function show_all_redmine_tasks(){
+        $proj=$this->get_member_projects($this->id);
+        $arr=array();
+        foreach($proj as $pr){
+            $a=$this->get_issues($pr['id']);
+            if($a){
+                array_push($arr,$a);
+            }
+        }
+        return $arr;
+    }
     function auth($email,$password){
         /*
             Вернёт токен и пароль в случае успеха
