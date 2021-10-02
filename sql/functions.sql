@@ -137,9 +137,9 @@ create function delete_team_member(
 )
 RETURNS int
 begin
-    IF( EXISTS(SELECT `id` from `team` where `id`=tid_val and `oid`=oid_val) AND tid_val<>oid_val AND EXISTS(SELECT `id` from `team_members` where `uid`=oid_val) ) 
+    IF( EXISTS(SELECT `id` from `teams` where ((`id`=tid_val) and (`oid`=oid_val))) AND (tid_val<>oid_val) AND EXISTS(SELECT `uid` from `team_members` where `uid`=oid_val) ) 
     THEN
-        DELETE FROM `team_members` WHERE `tid`=tid_valA AND `uid`=oid_val;
+        DELETE FROM `team_members` WHERE `tid`=tid_val AND `uid`=oid_val;
         return 1;
     END IF;
     return 0;

@@ -160,7 +160,20 @@ class Main{
         /*
             Добавить пользователя в команду
         */
-        $ret=$this->mysqli->query("SELECT add_team_member(".$this->id.",'".$tid."','".$mid."')  as ans;");
+        $ret=$this->mysqli->query("SELECT add_team_member(".$this->id.",'".intval($tid)."','".intval($mid)."')  as ans;");
+        if($ret->num_rows){
+            if($re=$ret->fetch_assoc()){
+                $ret->free();
+                return $re['ans'];
+            }
+        }
+        return false;
+    }
+    function delete_team_member($tid,$mid){
+        /*
+            Добавить пользователя в команду
+        */
+        $ret=$this->mysqli->query("SELECT delete_team_member(".$this->id.",'".intval($tid)."','".intval($mid)."')  as ans;");
         if($ret->num_rows){
             if($re=$ret->fetch_assoc()){
                 $ret->free();
