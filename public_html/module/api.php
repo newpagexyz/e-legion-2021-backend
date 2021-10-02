@@ -30,7 +30,39 @@
                     exit;
                 }
                 $ans=$Main->auth($email,$password);
-                if($ans){
+                if($ans!==false){
+                    echo json_encode(array("error"=>array('status'=>false),"body"=>$ans));
+                }
+                else{
+                    echo json_encode(array("error"=>array('status'=>true,"code"=>$Main->status,"description"=>$Main->status_text),"body"=>$ans));
+                }
+            break;
+            case "get_user_reviews":
+                if(isset($_GET['uid'])){
+                    $uid=$_GET['uid'];
+                }
+                else if(isset($_POST['uid'])){
+                    $uid=$_POST['uid'];
+                }
+                else{
+                    if($token){
+                        if($uid=$Main->check_token($token)){
+                            
+                        }
+                        else{
+                            http_response_code(400);
+                            echo json_encode(array("error"=>array('status'=>true,"code"=>403,"description"=>"Invalid token")));
+                            exit;
+                        }
+                    }
+                    else{
+                        http_response_code(400);
+                        echo json_encode(array("error"=>array('status'=>true,"code"=>400,"description"=>"Fill id or your token for your info")));
+                        exit;
+                    }
+                }
+                $ans=$Main->get_user_reviews($uid);
+                if($ans!==false){
                     echo json_encode(array("error"=>array('status'=>false),"body"=>$ans));
                 }
                 else{
@@ -62,7 +94,7 @@
                     }
                 }
                 $ans=$Main->get_user_info($uid);
-                if($ans){
+                if($ans!==false){
                     echo json_encode(array("error"=>array('status'=>false),"body"=>$ans));
                 }
                 else{
@@ -86,7 +118,7 @@
                 if($token){
                     if($Main->check_token($token)){
                         $ans=$Main->edit_user_info($key,$val);
-                        if($ans){
+                        if($ans!==false){
                             echo json_encode(array("error"=>array('status'=>false),"body"=>$ans));
                         }
                         else{
@@ -119,7 +151,7 @@
                 if($token){
                     if($Main->check_token($token)){
                         $ans=$Main->add_review($rid,$rate,$title,$body);
-                        if($ans){
+                        if($ans!==false){
                             echo json_encode(array("error"=>array('status'=>false),"body"=>$ans));
                         }
                         else{
@@ -140,7 +172,7 @@
                     $role=$_POST['role'];
                 }
                 $ans=$Main->get_users($role);
-                if($ans){
+                if($ans!==false){
                     echo json_encode(array("error"=>array('status'=>false),"body"=>$ans));
                 }
                 else{
@@ -160,7 +192,7 @@
                 }
                 if($Main->check_token($token)){
                     $ans=$Main->get_team_info($pid);
-                    if($ans){
+                    if($ans!==false){
                         echo json_encode(array("error"=>array('status'=>false),"body"=>$ans));
                     }
                     else{
@@ -183,7 +215,7 @@
                     exit;
                 }
                 $ans=$Main->get_project_members($pid);
-                if($ans){
+                if($ans!==false){
                     echo json_encode(array("error"=>array('status'=>false),"body"=>$ans));
                 }
                 else{
