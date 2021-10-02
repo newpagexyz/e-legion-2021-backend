@@ -182,6 +182,19 @@ class Main{
         }
         return false;
     }
+    function add_review($rid,$rate,$title,$body){
+        /*
+            Добавить оценку пользователя
+        */
+        $ret=$this->mysqli->query("SELECT add_review(".$this->id.",'".intval($rid)."','".intval($rate)."','".$this->mysqli->real_escape_string($title)."','".$this->mysqli->real_escape_string($body)."')  as ans;");
+        if($ret->num_rows){
+            if($re=$ret->fetch_assoc()){
+                $ret->free();
+                return $re['ans'];
+            }
+        }
+        return false;
+    }
     private function clear_mysqli(){
         while($this->mysqli->next_result()) $this->mysqli->store_result();
     }

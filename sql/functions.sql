@@ -160,7 +160,7 @@ begin
     if(wid_val<>rid_val)
     THEN
        INSERT INTO `reviews` SET `wid`=wid_val,`rid`=rid_val,`rate`=rate_val,`title`=title_val,`body`=body_val;
-        return 1;
+       return LAST_INSERT_ID();
    end if;
     return 0;
 end;

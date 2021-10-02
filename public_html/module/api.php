@@ -98,6 +98,39 @@
                     }
                 }
             break;
+            case "add_review":
+                if(isset($_GET['rid']) AND isset($_GET['rate']) AND isset($_GET['title']) AND isset($_GET['body'])){
+                    $rid=$_GET['rid'];
+                    $rate=$_GET['rate'];
+                    $title=$_GET['title'];
+                    $body=$_GET['body'];
+                }
+                else if(isset($_POST['rid']) AND isset($_POST['rate']) AND isset($_POST['title']) AND isset($_POST['body'])){
+                    $rid=$_POST['rid'];
+                    $rate=$_POST['rate'];
+                    $title=$_POST['title'];
+                    $body=$_POST['body'];
+                }
+                else{
+                    http_response_code(400);
+                    echo json_encode(array("error"=>array('status'=>true,"code"=>400,"description"=>"Fill all fields")));
+                    exit;
+                }
+                if($token){
+                    if($Main->check_token($token)){
+                        $ans=$Main->add_review($rid,$rate,$title,$body);
+                        if($ans){
+                            echo json_encode(array("error"=>array('status'=>false),"body"=>$ans));
+                        }
+                        else{
+                            echo json_encode(array("error"=>array('status'=>true,"code"=>$Main->status,"description"=>$Main->status_text),"body"=>$ans));
+                        }
+                    }
+                    else{
+                        echo json_encode(array("error"=>array('status'=>true,"code"=>403,"description"=>"Invalid token")));    
+                    }
+                }
+            break;
             case "get_users":
                 $role=3;
                 if(isset($_GET['role'])){
