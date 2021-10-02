@@ -80,10 +80,19 @@ class Main{
         }
         return false;
     }
-    function edit_user_info($uid){
+    function edit_user_info($key,$val){
         /*
             Изменяет профиль пользователя
         */
+        $ret=$this->mysqli->query("SELECT edit_user_info(".$this->id.",'".$key."','".$val."')  as ans;");
+        if($ret->num_rows){
+            if($re=$ret->fetch_assoc()){
+                $ret->free();
+                $this->clear_mysqli();
+                return $re['ans'];
+            }
+        }
+        return false;
     }
     private function clear_mysqli(){
         while($this->mysqli->next_result()) $this->mysqli->store_result();
