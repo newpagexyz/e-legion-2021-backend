@@ -237,3 +237,13 @@ begin
     return cid_val;
 end;
 //
+create function delete_event(
+    OID_VAL      INT UNSIGNED,
+    EID_VAL      INT UNSIGNED
+)
+RETURNS int unsigned
+begin
+    DELETE FROM `calendar` WHERE `oid`=OID_VAL AND `id`=EID_VAL;
+    return 1;
+end;
+//

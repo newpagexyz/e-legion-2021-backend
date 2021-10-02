@@ -111,6 +111,16 @@ class Main{
         }
         return false;
     }
+    function delete_event($eid){
+        $ret=$this->mysqli->query("SELECT add_event(".$this->id.",'".intval($eid)."')  as ans;");
+        if($ret->num_rows){
+            if($re=$ret->fetch_assoc()){
+                $ret->free();
+                return $re['ans'];
+            }
+        }
+        return false;
+    }
     function add_event_member($tid,$mid){
         /*
             Добавить пользователя в событие

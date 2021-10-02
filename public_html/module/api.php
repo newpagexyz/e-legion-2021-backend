@@ -303,6 +303,33 @@
                     }
                 }
             break;
+            case "delete_event":
+                if(isset($_GET['eid'])){
+                    $eid=$_GET['eid'];
+                }
+                else if(isset($_POST['eid'])){
+                    $eid=$_POST['eid'];
+                }
+                else{
+                    http_response_code(400);
+                    echo json_encode(array("error"=>array('status'=>true,"code"=>400,"description"=>"Fill all fields")));
+                    exit;
+                }
+                if($token){
+                    if($Main->check_token($token)){
+                        $ans=$Main->delete_event($eid);
+                        if($ans!==false){
+                            echo json_encode(array("error"=>array('status'=>false),"body"=>$ans));
+                        }
+                        else{
+                            echo json_encode(array("error"=>array('status'=>true,"code"=>$Main->status,"description"=>$Main->status_text),"body"=>$ans));
+                        }
+                    }
+                    else{
+                        echo json_encode(array("error"=>array('status'=>true,"code"=>403,"description"=>"Invalid token")));    
+                    }
+                }
+            break;
             case "add_event_member":
                 if(isset($_GET['eid']) AND isset($_GET['uid'])){
                     $eid=$_GET['eid'];
