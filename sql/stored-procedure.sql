@@ -127,3 +127,13 @@ begin
     SELECT `token`,`oid` as `id`,`auth_time` FROM `tokens`;
 end;
 // 
+/*
+    Получить id пользователя по токену
+*/
+create procedure get_id_by_token(
+    IN `token_val`     CHAR(64)
+)
+begin
+    SELECT `oid` as `id` FROM `tokens` WHERE `token`=token_val; 
+end;
+// 

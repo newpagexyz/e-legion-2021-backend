@@ -25,10 +25,12 @@ class Main{
         /*
             Выдаст информацию о пользователе
         */
-        $ret=$this->mysqli->query("call get_user_info(".intval($id).")");
+        $ret=$this->mysqli->query("call get_user_info(".intval($id).");");
+        
         if($ret->num_rows){
-            if($re=$ret->fetch_assoc){
+            if($re=$ret->fetch_assoc()){
                 $ret->free();
+                $this->clear_mysqli();
                 return $re;
             }
         }
@@ -49,6 +51,8 @@ class Main{
                         if($re['ans']){
                             $ret=$this->mysqli->query("call get_auth_token(".$re['ans'].")");
                             if($re=$ret->fetch_assoc()){
+                                $ret->free();
+                                $this->clear_mysqli();
                                 $this->id=$re['id'];
                                 return $re;
                             }
@@ -62,6 +66,27 @@ class Main{
             $this->status_text="Incorrect login or password";
         }
         return false;
+    }
+    function check_token($token){
+        $ret=$this->mysqli->query("call get_id_by_token('".$token."');");
+        if($ret->num_rows){
+            if($re=$ret->fetch_assoc()){
+                $ret->free();
+                $this->clear_mysqli();
+                $this->id=$re['id'];
+                return $this->id;
+
+            }
+        }
+        return false;
+    }
+    function edit_user_info($uid){
+        /*
+            Изменяет профиль пользователя
+        */
+    }
+    private function clear_mysqli(){
+        while($this->mysqli->next_result()) $this->mysqli->store_result();
     }
     protected static function my_connect(){
         /*

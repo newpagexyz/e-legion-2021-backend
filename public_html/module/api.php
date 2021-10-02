@@ -37,6 +37,38 @@
                     echo json_encode(array("error"=>array('status'=>true,"code"=>$Main->status,"description"=>$Main->status_text),"body"=>$ans));
                 }
             break;
+            case "user_info":
+                if(isset($_GET['uid'])){
+                    $uid=$_GET['uid'];
+                }
+                else if(isset($_POST['uid'])){
+                    $uid=$_POST['uid'];
+                }
+                else{
+                    if($token){
+                        if($uid=$Main->check_token($token)){
+                            
+                        }
+                        else{
+                            http_response_code(400);
+                            echo json_encode(array("error"=>array('status'=>true,"code"=>403,"description"=>"Invalid token")));
+                            exit;
+                        }
+                    }
+                    else{
+                        http_response_code(400);
+                        echo json_encode(array("error"=>array('status'=>true,"code"=>400,"description"=>"Fill id or your token for your info")));
+                        exit;
+                    }
+                }
+                $ans=$Main->get_user_info($uid);
+                if($ans){
+                    echo json_encode(array("error"=>array('status'=>false),"body"=>$ans));
+                }
+                else{
+                    echo json_encode(array("error"=>array('status'=>true,"code"=>$Main->status,"description"=>$Main->status_text),"body"=>$ans));
+                }
+            break;
             default:
             http_response_code(400);
             echo json_encode(array("error"=>array('status'=>true,"code"=>400,"description"=>"Incorrect method")));
