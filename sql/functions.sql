@@ -74,9 +74,9 @@ RETURNS int
 begin
     IF EXISTS(SELECT `role` from `users` where `id`=oid_val and `role`<2)
     THEN
-        INSERT INTO `teams` SET `oid` =oid, `name`=name_val;
+        INSERT INTO `teams` SET `oid` =oid_val, `name`=name_val;
         INSERT INTO `team_members` set `uid`=oid_val, `tid`=LAST_INSERT_ID();
-        return 1;
+        return LAST_INSERT_ID();
     END IF;
     return 0;
 end;
@@ -119,9 +119,9 @@ create function add_team_member(
 )
 RETURNS int
 begin
-    IF( EXISTS(SELECT `id` from `team` where `id`=tid_val and `oid`=oid_val) AND tid_val<>oid_val AND NOT EXISTS(SELECT `id` from `team_members` where `uid`=oid_val) ) 
+    IF( EXISTS(SELECT `id` from `teams` where `id`=tid_val and `oid`=oid_val) AND mid_val<>oid_val AND NOT EXISTS(SELECT `uid` from `team_members` where `uid`=mid_val) ) 
     THEN
-        INSERT INTO `team_members` SET `tid`=tid_val, `uid`=oid_val;
+        INSERT INTO `team_members` SET `tid`=tid_val, `uid`=mid_val;
         return 1;
     END IF;
     return 0;

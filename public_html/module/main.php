@@ -115,9 +115,22 @@ class Main{
     }
     function create_team($name){
         /*
-            Изменяет профиль пользователя
+            Создать команду
         */
         $ret=$this->mysqli->query("SELECT create_team(".$this->id.",'".$name."')  as ans;");
+        if($ret->num_rows){
+            if($re=$ret->fetch_assoc()){
+                $ret->free();
+                return $re['ans'];
+            }
+        }
+        return false;
+    }
+    function add_team_member($tid,$mid){
+        /*
+            Добавить пользователя в команду
+        */
+        $ret=$this->mysqli->query("SELECT add_team_member(".$this->id.",'".$tid."','".$mid."')  as ans;");
         if($ret->num_rows){
             if($re=$ret->fetch_assoc()){
                 $ret->free();

@@ -5,6 +5,8 @@
 * [user info](#user_info_api)
 * [edit user info](#edit_user_info_api)
 * [get users](#get_users_api)
+* [create team](#create_team_api)
+* [add team member](#add_team_member_api)
 ## API v.1
 #### <a name="auth_api"> site/api/v1/auth
 fields:  
@@ -22,5 +24,13 @@ fields:
 4. FILES[file] (if set, val=file)
 #### <a name="get_users_api"> site/api/v1/get_users
 fields:
-role (0 - supervisor, 1 -teamlead, 2 -legioner, 3 -all)
-
+1. role (0 - supervisor, 1 -teamlead, 2 -legioner, 3 -all)
+#### <a name="create_team_api"> site/api/v1/create_team
+fields:
+1. name
+2. token
+#### <a name="add_team_member_api"> site/api/v1/add_team_member
+fields:
+1. tid (team id)
+2. mid (member id)
+2. token
