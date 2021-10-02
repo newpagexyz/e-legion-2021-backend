@@ -114,6 +114,25 @@
                     echo json_encode(array("error"=>array('status'=>true,"code"=>$Main->status,"description"=>$Main->status_text),"body"=>$ans));
                 }
             break;
+            case "get_team_members":
+                if(isset($_GET['tid'])){
+                    $pid=$_GET['tid'];
+                }
+                else if(isset($_POST['tid'])){
+                    $pid=$_POST['tid'];
+                }
+                else{
+                    echo json_encode(array("error"=>array('status'=>true,"code"=>400,"description"=>"Fill project id")));    
+                    exit;
+                }
+                $ans=$Main->get_project_members($pid);
+                if($ans){
+                    echo json_encode(array("error"=>array('status'=>false),"body"=>$ans));
+                }
+                else{
+                    echo json_encode(array("error"=>array('status'=>true,"code"=>$Main->status,"description"=>$Main->status_text),"body"=>$ans));
+                }
+            break;
             case "create_team":
                 if(isset($_GET['name'])){
                     $role=$_GET['name'];

@@ -113,6 +113,22 @@ class Main{
         }
         return false;
     }
+    function get_project_members($pid){
+        /*
+            Вывести список пользователя
+        */
+        $ret=$this->mysqli->query("call get_project_members(".intval($pid).")");
+        if($ret->num_rows){
+            $ans=array();
+            while($re=$ret->fetch_assoc()){
+                array_push($ans,$re);
+            }
+            $ret->free();
+            $this->clear_mysqli();
+            return $ans;
+        }
+        return false;
+    }
     function create_team($name){
         /*
             Создать команду
