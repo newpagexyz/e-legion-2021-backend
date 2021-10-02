@@ -36,6 +36,21 @@ class Main{
         }
         return false;
     }
+    function get_user_rating($id){
+        /*
+            Выдаст информацию о пользователе
+        */
+        $ret=$this->mysqli->query("call get_user_rating(".intval($id).");");
+        
+        if($ret->num_rows){
+            if($re=$ret->fetch_assoc()){
+                $ret->free();
+                $this->clear_mysqli();
+                return $re['rate'];
+            }
+        }
+        return false;
+    }
     function get_user_reviews($id){
         /*
             Выдаст отзывы о пользователе
