@@ -36,6 +36,20 @@ class Main{
         }
         return false;
     }
+    function get_team_info($id){
+        /*
+            Выдаст информацию о команде
+        */
+        $ret=$this->mysqli->query("call get_team_info(".$this->id.",".intval($id).");");
+        if($ret->num_rows){
+            if($re=$ret->fetch_assoc()){
+                $ret->free();
+                $this->clear_mysqli();
+                return $re;
+            }
+        }
+        return false;
+    }
     function auth($email,$password){
         /*
             Вернёт токен и пароль в случае успеха

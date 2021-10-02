@@ -81,9 +81,9 @@ create procedure get_team_info(
     IN `TID` INT UNSIGNED
 )
 begin
-    IF EXISTS(SELECT `id` from `team_members` where `uid`=UID) 
+    IF EXISTS(SELECT `uid` from `team_members` where `uid`=UID) 
     THEN
-        SELECT `oid`,`tg_link`,`redmind_id`,`avatar`,`name` FROM `teams` WHERE `teams`.`tid`= TID;
+        SELECT `oid`,`tg_link`,`redmind_id`,`avatar`,`name` FROM `teams` WHERE `teams`.`id`= TID;
     END IF;
 end;
 //

@@ -114,6 +114,30 @@
                     echo json_encode(array("error"=>array('status'=>true,"code"=>$Main->status,"description"=>$Main->status_text),"body"=>$ans));
                 }
             break;
+            case "get_team_info":
+                if(isset($_GET['tid'])){
+                    $pid=$_GET['tid'];
+                }
+                else if(isset($_POST['tid'])){
+                    $pid=$_POST['tid'];
+                }
+                else{
+                    echo json_encode(array("error"=>array('status'=>true,"code"=>400,"description"=>"Fill team id")));    
+                    exit;
+                }
+                if($Main->check_token($token)){
+                    $ans=$Main->get_team_info($pid);
+                    if($ans){
+                        echo json_encode(array("error"=>array('status'=>false),"body"=>$ans));
+                    }
+                    else{
+                        echo json_encode(array("error"=>array('status'=>true,"code"=>$Main->status,"description"=>$Main->status_text),"body"=>$ans));
+                    }
+                }
+                else{
+                    echo json_encode(array("error"=>array('status'=>true,"code"=>403,"description"=>"Invalid token")));  
+                }
+            break;
             case "get_team_members":
                 if(isset($_GET['tid'])){
                     $pid=$_GET['tid'];
@@ -122,7 +146,7 @@
                     $pid=$_POST['tid'];
                 }
                 else{
-                    echo json_encode(array("error"=>array('status'=>true,"code"=>400,"description"=>"Fill project id")));    
+                    echo json_encode(array("error"=>array('status'=>true,"code"=>400,"description"=>"Fill team id")));    
                     exit;
                 }
                 $ans=$Main->get_project_members($pid);
