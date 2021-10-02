@@ -77,7 +77,8 @@ CREATE TABLE users(
     `cv`               CHAR(64),
     `vacation_start`   DATE,
     `vacation_end`     DATE,
-    `birth_date`       DATE
+    `birth_date`       DATE,
+    FULLTEXT KEY (`name`,`surname`,`patronymic`,`full_name`)
 );
 /*
     Таблица команд:
@@ -95,7 +96,7 @@ CREATE TABLE teams(
     `redmind_id`       VARCHAR(255),
     `avatar`           CHAR(70),
     `name`             VARCHAR(255),
-    FOREIGN KEY (`oid`) REFERENCES `users` (id) ON DELETE CASCADE
+    FOREIGN KEY (`oid`) REFERENCES `users` (id) ON DELETE CASCADE,
 );
 /*
     Таблица членов команд:

@@ -230,6 +230,21 @@ class Main{
         }
         return $ans;
     }
+    function search_user($query){
+        /*
+            Вывести список пользователя
+        */
+        $ret=$this->mysqli->query("call search_user('".$this->mysqli->real_escape_string($query)."');");
+        $ans=array();
+        if($ret->num_rows){
+            while($re=$ret->fetch_assoc()){
+                array_push($ans,$re);
+            }
+            $ret->free();
+            $this->clear_mysqli();
+        }
+        return $ans;
+    }
     function create_team($name){
         /*
             Создать команду

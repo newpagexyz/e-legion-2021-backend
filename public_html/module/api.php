@@ -259,6 +259,26 @@
                     echo json_encode(array("error"=>array('status'=>true,"code"=>$Main->status,"description"=>$Main->status_text),"body"=>$ans));
                 }
             break;
+            case "search_user":
+                if(isset($_GET['query'])){
+                    $query=$_GET['query'];
+                }
+                else if(isset($_POST['query'])){
+                    $query=$_POST['query'];
+                }
+                else{
+                    http_response_code(400);
+                    echo json_encode(array("error"=>array('status'=>true,"code"=>400,"description"=>"Fill all fields")));
+                    exit;
+                }
+                $ans=$Main->search_user($query);
+                if($ans!==false){
+                    echo json_encode(array("error"=>array('status'=>false),"body"=>$ans));
+                }
+                else{
+                    echo json_encode(array("error"=>array('status'=>true,"code"=>$Main->status,"description"=>$Main->status_text),"body"=>$ans));
+                }
+            break;
             case "get_users_rating":
                 $ans=$Main->get_users_rating($role);
                 if($ans!==false){
