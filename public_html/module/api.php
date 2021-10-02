@@ -98,6 +98,22 @@
                     }
                 }
             break;
+            case "get_users":
+                $role=3;
+                if(isset($_GET['role'])){
+                    $role=$_GET['role'];
+                }
+                else if(isset($_POST['role'])){
+                    $role=$_POST['role'];
+                }
+                $ans=$Main->get_users($role);
+                if($ans){
+                    echo json_encode(array("error"=>array('status'=>false),"body"=>$ans));
+                }
+                else{
+                    echo json_encode(array("error"=>array('status'=>true,"code"=>$Main->status,"description"=>$Main->status_text),"body"=>$ans));
+                }
+            break;
             default:
             http_response_code(400);
             echo json_encode(array("error"=>array('status'=>true,"code"=>400,"description"=>"Incorrect method")));

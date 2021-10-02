@@ -84,13 +84,31 @@ class Main{
         /*
             Изменяет профиль пользователя
         */
-        $ret=$this->mysqli->query("SELECT edit_user_info(".$this->id.",'".$key."','".$val."')  as ans;");
-        if($ret->num_rows){
-            if($re=$ret->fetch_assoc()){
-                $ret->free();
-                $this->clear_mysqli();
-                return $re['ans'];
+        if($key!="CV"){
+            $ret=$this->mysqli->query("SELECT edit_user_info(".$this->id.",'".$key."','".$val."')  as ans;");
+            if($ret->num_rows){
+                if($re=$ret->fetch_assoc()){
+                    $ret->free();
+                    $this->clear_mysqli();
+                    return $re['ans'];
+                }
             }
+        }
+        return false;
+    }
+    function get_users($type_select=3){
+        /*
+            Изменяет профиль пользователя
+        */
+        $ret=$this->mysqli->query("call get_users(".intval($type_select).");");
+        if($ret->num_rows){
+            $ans=array();
+            while($re=$ret->fetch_assoc()){
+                array_push($ans,$re);
+            }
+            $ret->free();
+            $this->clear_mysqli();
+            return $ans;
         }
         return false;
     }
