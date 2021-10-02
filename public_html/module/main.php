@@ -69,6 +69,21 @@ class Main{
         }
         return $ans;
     }
+    function get_calendar(){
+        /*
+            Выдаст календарь пользователя
+        */
+        $ret=$this->mysqli->query("call show_events(".$this->id.");");
+        $ans=array();
+        if($ret->num_rows){
+            while($re=$ret->fetch_assoc()){
+                array_push($ans,$re);
+            }
+            $ret->free();
+            $this->clear_mysqli();
+        }
+        return $ans;
+    }
     function team_vacations($id){
         /*
             Выдаст отпуска сотрудников
