@@ -4,7 +4,6 @@
     */
     const MYSQL_config= array(
         'host'      => '127.0.0.1',           // Адрес хоста
-        'user'      => 'tm_live_user',        // Пользователь БД
+        'user'      => 'elegion_user',        // Пользователь БД
         'password'  =>'pass123',              // Пароль
-        'db'        =>'tm_live_db');          // БД
-?>
+        'db'        =>'elegion_db');          // БД

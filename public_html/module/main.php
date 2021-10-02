@@ -15,7 +15,7 @@ class Main{
 				$this->id=intval($uid);
 			}
   		}
-  		function __destruct() {
+  		function __destruct(){
   			/*
   			Деструктор, закрывает соединение с бд
   			*/
@@ -38,17 +38,17 @@ class Main{
         /*
             Вернёт токен и пароль в случае успеха
         */
-        $ret=$this->mysqli->query("select check_auth(".$this->mysqli->real_escape_string($email).",".$this->mysqli->real_escape_string($password).") as ans;");
+        $ret=$this->mysqli->query("select check_auth('".$this->mysqli->real_escape_string($email)."','".$this->mysqli->real_escape_string($password)."') as ans;");
         if($ret->num_rows){
-            if($re=$ret->fetch_assoc){
+            if($re=$ret->fetch_assoc()){
                 $ret->free();
                 if($re['ans']){
                     $ret=$this->mysqli->query("select auth_user(".$re['ans'].") as ans;");
-                    if($re=$ret->fetch_assoc){
+                    if($re=$ret->fetch_assoc()){
                         $ret->free();
                         if($re['ans']){
-                            $ret=$this->mysqli->query("call get_auth_token(".$re['ans'].") as ans;");
-                            if($re=$ret->fetch_assoc){
+                            $ret=$this->mysqli->query("call get_auth_token(".$re['ans'].")");
+                            if($re=$ret->fetch_assoc()){
                                 $this->id=$re['id'];
                                 return $re;
                             }
@@ -56,6 +56,10 @@ class Main{
                     }
                 }
             }
+        }
+        else{
+            $this->status=401;
+            $this->status_text="Incorrect login or password";
         }
         return false;
     }
