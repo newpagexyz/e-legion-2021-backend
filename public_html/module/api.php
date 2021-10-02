@@ -124,12 +124,17 @@
                 else{
                     echo json_encode(array("error"=>array('status'=>true,"code"=>400,"description"=>"Set team name")));
                 }
-                $ans=$Main->create_team($role);
-                if($ans){
-                    echo json_encode(array("error"=>array('status'=>false),"body"=>$ans));
+                if($Main->check_token($token)){
+                    $ans=$Main->create_team($role);
+                    if($ans!==false){
+                        echo json_encode(array("error"=>array('status'=>false),"body"=>$ans));
+                    }
+                    else{
+                        echo json_encode(array("error"=>array('status'=>true,"code"=>$Main->status,"description"=>$Main->status_text),"body"=>$ans));
+                    }
                 }
                 else{
-                    echo json_encode(array("error"=>array('status'=>true,"code"=>$Main->status,"description"=>$Main->status_text),"body"=>$ans));
+                    echo json_encode(array("error"=>array('status'=>true,"code"=>403,"description"=>"Invalid token")));
                 }
             break;
             default:
