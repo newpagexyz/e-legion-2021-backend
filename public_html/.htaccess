@@ -2,6 +2,7 @@ RewriteEngine on
         RewriteBase /
         RewriteRule ^api/v1/(.*)(/)(.*)$          /module/api.php?method=$1&$3                             [QSA,L]
         RewriteRule ^api/v1/(.*)$                 /module/api.php?method=$1&                               [QSA,L]
+        RewriteRule ^files/avatar/(.*)$           /module/file_view.php?file=$1&                       [QSA,L]
         RewriteRule ^favicon.ico                  /static/img/logo.png                                     [QSA,L]
         RewriteRule ^$                            /static/html/index.html                                  [QSA,L]
 ErrorDocument 400 /static/html/errors/400.html

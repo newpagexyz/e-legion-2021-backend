@@ -4,6 +4,9 @@ class Main{
     public $id;
     public $status;
     public $status_text;
+    private const IMAGE_FORMATS = array(
+        "bmp","dib","rle","jpg","jfif","jpe","jpeg","jp2","j2k","jpf","jpm","jpg2","j2c","jpc","jpx","mj2","gif","tif","tiff","ico","jxr","hdp","wdp","png","webp","svg"
+    );
     function __construct($uid=false){
 		/*
 		Конструктор, принимает на вход необязательный параметр id пользователя
@@ -145,18 +148,20 @@ class Main{
         /*
             Изменяет профиль пользователя
         */
-        if($isset($_FILES['file'])){
-            $token=self::gen_token().".".(pathinfo($_FILES['file']))['extension'];
-            while(file_exists($_SERVER['DOCUMENT_ROOT'].'/user_files/profile_photo/'.$token)){
-                $token=self::gen_token().".".(pathinfo($file['name']))['extension'];
-            }
-            if (move_uploaded_file($_FILES['file']['tmp_name'], $_SERVER['DOCUMENT_ROOT'].'/user_files/profile_photo/'.$token)) {
-                $ret=$this->mysqli->query("SELECT edit_user_info(".$this->id.",'avatar','".$token."')  as ans;");
-                if($ret->num_rows){
-                    if($re=$ret->fetch_assoc()){
-                        $ret->free();
-                        $this->clear_mysqli();
-                        return $re['ans'];
+        if(isset($_FILES['file'])){
+            if(self::isPhoto($_FILES['file'])){
+                $token=self::gen_token().".".(pathinfo($_FILES['file']['name']))['extension'];
+                while(file_exists($_SERVER['DOCUMENT_ROOT'].'/user_files/profile_photo/'.$token)){
+                    $token=self::gen_token().".".(pathinfo($file['name']))['extension'];
+                }
+                if (move_uploaded_file($_FILES['file']['tmp_name'], $_SERVER['DOCUMENT_ROOT'].'/user_files/profile_photo/'.$token)) {
+                    $ret=$this->mysqli->query("SELECT edit_user_info(".$this->id.",'avatar','".$token."')  as ans;");
+                    if($ret->num_rows){
+                        if($re=$ret->fetch_assoc()){
+                            $ret->free();
+                            $this->clear_mysqli();
+                            return $re['ans'];
+                        }
                     }
                 }
             }
@@ -296,5 +301,21 @@ class Main{
         }
             $mysqli->set_charset("utf8_unicode_ci");
             return $mysqli;
+    }
+    protected static function gen_token(){
+        /*
+            Функция для генерации строки в 64 символа, криптостойким алгоритмом
+        */
+      return hash("sha256", random_bytes(64));
+    }
+    protected static function isPhoto($file){
+        /*
+            Проверка является ли файл изображением (по расширению, а не по начинке, можно передать исполняемый файл как картинку, а потом сменить расширение)
+        */
+        $file_name=$file['name'];
+        if(in_array(pathinfo($file_name)['extension'],self::IMAGE_FORMATS) AND (strpos(pathinfo($file_name)['filename'], '.')===false)){
+            return true;
+        }
+        return false;
     }
 }
