@@ -69,6 +69,21 @@ class Main{
         }
         return $ans;
     }
+    function team_vacations($id){
+        /*
+            Выдаст отпуска сотрудников
+        */
+        $ret=$this->mysqli->query("call team_vacations(".intval($id).");");
+        $ans=array();
+        if($ret->num_rows){
+            while($re=$ret->fetch_assoc()){
+                array_push($ans,$re);
+            }
+            $ret->free();
+            $this->clear_mysqli();
+        }
+        return $ans;
+    }
     function get_team_info($id){
         /*
             Выдаст информацию о команде

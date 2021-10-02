@@ -259,6 +259,24 @@
                     echo json_encode(array("error"=>array('status'=>true,"code"=>$Main->status,"description"=>$Main->status_text),"body"=>$ans));
                 }
             break;
+            case "team_vacations":
+                if(isset($_GET['tid'])){
+                    $tid=$_GET['tid'];
+                }
+                else if(isset($_POST['tid'])){
+                    $tid=$_POST['tid'];
+                }
+                else{
+                    echo json_encode(array("error"=>array('status'=>true,"code"=>400,"description"=>"Fill team id")));    
+                }
+                $ans=$Main->team_vacations($tid);
+                if($ans!==false){
+                    echo json_encode(array("error"=>array('status'=>false),"body"=>$ans));
+                }
+                else{
+                    echo json_encode(array("error"=>array('status'=>true,"code"=>$Main->status,"description"=>$Main->status_text),"body"=>$ans));
+                }
+            break;
             case "search_user":
                 if(isset($_GET['query'])){
                     $query=$_GET['query'];

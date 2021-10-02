@@ -160,3 +160,11 @@ begin
       AGAINST(NAME_val);
 end;
 //
+create procedure team_vacations(
+    IN `tid_val`     INT UNSIGNED
+)
+begin
+    select `users`.`id`,`users`.`name`,`users`.`surname`,`users`.`patronymic`,`users`.`vacation_start`, `users`.`vacation_end`  
+    FROM `users` INNER JOIN `team_members` ON `team_members`.`uid`=`users`.`id` WHERE `team_members`.`tid`=tid_val; 
+end;
+//
