@@ -192,23 +192,31 @@ begin
 end;
 //
 create function add_event_member(
+    OID_VAL      INT UNSIGNED,
     UID_VAL      INT UNSIGNED,
     EID_VAL      INT UNSIGNED
 )
 RETURNS int unsigned
 begin
-    INSERT INTO `event_members` SET `cid`=cid_val, `uid`=UID_VAL;
-    return 1;
+    IF( EXISTS(SELECT `id` from `calendar` where `id`=EID_VAL AND `oid`=OID_VAL) )
+        THEN 
+        INSERT INTO `event_members` SET `cid`=EID_VAL, `uid`=UID_VAL;
+        return 1;
+    END IF;
 end;
 //
 create function delete_event_member(
+    OID_VAL      INT UNSIGNED,
     UID_VAL      INT UNSIGNED,
     EID_VAL      INT UNSIGNED
 )
 RETURNS int unsigned
 begin
-    DELETE FROM `event_members` WHERE `cid`=cid_val AND `uid`=UID_VAL;
-    return 1;
+    IF( EXISTS(SELECT `id` from `calendar` where `id`=EID_VAL AND `oid`=OID_VAL) ) 
+        THEN
+        DELETE FROM `event_members` WHERE `cid`=EID_VAL AND `uid`=UID_VAL;
+        return 1;
+    END IF;
 end;
 //
 create function add_event(
@@ -216,7 +224,6 @@ create function add_event(
     NAME_VAL     VARCHAR(255),
     DESC_VAL     VARCHAR(255),
     TYPE_VAL     VARCHAR(255),
-    OID_VAL      INT UNSIGNED,
     PLACE_VAL    VARCHAR(255),
     START_VAL    DATETIME,
     END_VAL      DATETIME

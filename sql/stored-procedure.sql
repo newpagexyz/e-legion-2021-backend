@@ -70,7 +70,7 @@ create procedure get_member_projects(
     IN `UID` INT UNSIGNED
 )
 begin
-  SELECT `teams`.`name`,`teams`.`avatar` FROM `teams` INNER JOIN `team_members` ON `team_members`.`tid`=`teams`.`id` WHERE `team_members`.`uid`= UID;
+  SELECT `teams`.`id`,`teams`.`name`,`teams`.`avatar` FROM `teams` INNER JOIN `team_members` ON `team_members`.`tid`=`teams`.`id` WHERE `team_members`.`uid`= UID;
 end;
 //
 /*
@@ -166,5 +166,21 @@ create procedure team_vacations(
 begin
     select `users`.`id`,`users`.`name`,`users`.`surname`,`users`.`patronymic`,`users`.`vacation_start`, `users`.`vacation_end`  
     FROM `users` INNER JOIN `team_members` ON `team_members`.`uid`=`users`.`id` WHERE `team_members`.`tid`=tid_val; 
+end;
+//
+create procedure show_event_members(
+    IN `cid_val`     INT UNSIGNED
+)
+begin
+    select `event_members`.`uid` FROM `event_members` WHERE `event_members`.`cid`=cid_val; 
+end;
+//
+create procedure show_events(
+    IN `uid_val`     INT UNSIGNED
+)
+begin
+    SELECT 
+    `calendar`.`id`,`calendar`.`name`,`calendar`.`description`,`calendar`.`type`,`calendar`.`oid`,`calendar`.`place`,`calendar`.`start_time`,`calendar`.`end_time`,
+    `event_members`.`uid` FROM `calendar` INNER JOIN `event_members` ON `event_members`.`cid`=`calendar`.`id` WHERE `event_members`.`uid`=uid_val; 
 end;
 //

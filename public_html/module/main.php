@@ -87,7 +87,7 @@ class Main{
     function add_event($name,$description,$type,$place,$start_time,$end_time){
         $ret=$this->mysqli->query("SELECT add_event(".$this->id.",'".$this->mysqli->real_escape_string($name)."','".$this->mysqli->real_escape_string($description)."','".
         $this->mysqli->real_escape_string($type)."','".$this->mysqli->real_escape_string($place)."','".
-        $this->mysqli->real_escape_string($start_time)."','".$this->mysqli->real_escape_string($end_time)."',)  as ans;");
+        $this->mysqli->real_escape_string($start_time)."','".$this->mysqli->real_escape_string($end_time)."')  as ans;");
         if($ret->num_rows){
             if($re=$ret->fetch_assoc()){
                 $ret->free();

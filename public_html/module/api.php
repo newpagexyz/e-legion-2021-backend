@@ -282,12 +282,12 @@
             break;
             case "add_event_member":
                 if(isset($_GET['eid']) AND isset($_GET['uid'])){
-                    $tid=$_GET['eid'];
-                    $mid=$_GET['uid'];
+                    $eid=$_GET['eid'];
+                    $uid=$_GET['uid'];
                 }
                 else if(isset($_POST['eid']) AND isset($_POST['uid'])){
-                    $tid=$_POST['eid'];
-                    $mid=$_POST['uid'];
+                    $eid=$_POST['eid'];
+                    $uid=$_POST['uid'];
                 }
                 else{
                     echo json_encode(array("error"=>array('status'=>true,"code"=>400,"description"=>"Set team id and member id")));
@@ -308,12 +308,12 @@
             break;
             case "delete_event_member":
                 if(isset($_GET['eid']) AND isset($_GET['uid'])){
-                    $tid=$_GET['eid'];
-                    $mid=$_GET['uid'];
+                    $eid=$_GET['eid'];
+                    $uid=$_GET['uid'];
                 }
                 else if(isset($_POST['eid']) AND isset($_POST['uid'])){
-                    $tid=$_POST['eid'];
-                    $mid=$_POST['uid'];
+                    $eid=$_POST['eid'];
+                    $iid=$_POST['uid'];
                 }
                 else{
                     echo json_encode(array("error"=>array('status'=>true,"code"=>400,"description"=>"Set team id and member id")));
