@@ -101,6 +101,38 @@
                     echo json_encode(array("error"=>array('status'=>true,"code"=>$Main->status,"description"=>$Main->status_text),"body"=>$ans));
                 }
             break;
+            case "get_member_teams":
+                if(isset($_GET['uid'])){
+                    $uid=$_GET['uid'];
+                }
+                else if(isset($_POST['uid'])){
+                    $uid=$_POST['uid'];
+                }
+                else{
+                    if($token){
+                        if($uid=$Main->check_token($token)){
+                            
+                        }
+                        else{
+                            http_response_code(400);
+                            echo json_encode(array("error"=>array('status'=>true,"code"=>403,"description"=>"Invalid token")));
+                            exit;
+                        }
+                    }
+                    else{
+                        http_response_code(400);
+                        echo json_encode(array("error"=>array('status'=>true,"code"=>400,"description"=>"Fill id or your token for your info")));
+                        exit;
+                    }
+                }
+                $ans=$Main->get_member_projects($uid);
+                if($ans!==false){
+                    echo json_encode(array("error"=>array('status'=>false),"body"=>$ans));
+                }
+                else{
+                    echo json_encode(array("error"=>array('status'=>true,"code"=>$Main->status,"description"=>$Main->status_text),"body"=>$ans));
+                }
+            break;
             case "get_user_rating":
                 if(isset($_GET['uid'])){
                     $uid=$_GET['uid'];
@@ -131,6 +163,22 @@
                 }
                 else{
                     echo json_encode(array("error"=>array('status'=>true,"code"=>$Main->status,"description"=>$Main->status_text),"body"=>$ans));
+                }
+            break;
+            case "change_avatar":
+                if($token){
+                    if($Main->check_token($token)){
+                        $ans=$Main->change_avatar();
+                        if($ans!==false){
+                            echo json_encode(array("error"=>array('status'=>false),"body"=>$ans));
+                        }
+                        else{
+                            echo json_encode(array("error"=>array('status'=>true,"code"=>$Main->status,"description"=>$Main->status_text),"body"=>$ans));
+                        }
+                    }
+                    else{
+                        echo json_encode(array("error"=>array('status'=>true,"code"=>403,"description"=>"Invalid token")));    
+                    }
                 }
             break;
             case "edit_user_info":

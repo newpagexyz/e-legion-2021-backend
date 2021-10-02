@@ -38,7 +38,7 @@ class Main{
     }
     function get_user_rating($id){
         /*
-            Выдаст информацию о пользователе
+            Выдаст рейтинг пользователя
         */
         $ret=$this->mysqli->query("call get_user_rating(".intval($id).");");
         
@@ -129,13 +129,35 @@ class Main{
         /*
             Изменяет профиль пользователя
         */
-        if($key!="CV"){
+        if($key!="CV" AND $key!="avatar"){
             $ret=$this->mysqli->query("SELECT edit_user_info(".$this->id.",'".$key."','".$val."')  as ans;");
             if($ret->num_rows){
                 if($re=$ret->fetch_assoc()){
                     $ret->free();
                     $this->clear_mysqli();
                     return $re['ans'];
+                }
+            }
+        }
+        return false;
+    }
+    function change_avatar(){
+        /*
+            Изменяет профиль пользователя
+        */
+        if($isset($_FILES['file'])){
+            $token=self::gen_token().".".(pathinfo($_FILES['file']))['extension'];
+            while(file_exists($_SERVER['DOCUMENT_ROOT'].'/user_files/profile_photo/'.$token)){
+                $token=self::gen_token().".".(pathinfo($file['name']))['extension'];
+            }
+            if (move_uploaded_file($_FILES['file']['tmp_name'], $_SERVER['DOCUMENT_ROOT'].'/user_files/profile_photo/'.$token)) {
+                $ret=$this->mysqli->query("SELECT edit_user_info(".$this->id.",'avatar','".$token."')  as ans;");
+                if($ret->num_rows){
+                    if($re=$ret->fetch_assoc()){
+                        $ret->free();
+                        $this->clear_mysqli();
+                        return $re['ans'];
+                    }
                 }
             }
         }
@@ -177,17 +199,31 @@ class Main{
         /*
             Вывести список пользователя
         */
+        $ans=array();
         $ret=$this->mysqli->query("call get_project_members(".intval($pid).")");
         if($ret->num_rows){
-            $ans=array();
             while($re=$ret->fetch_assoc()){
                 array_push($ans,$re);
             }
             $ret->free();
             $this->clear_mysqli();
-            return $ans;
         }
-        return false;
+        return $ans;
+    }
+    function get_member_projects($uid){
+        /*
+            Вывести список пользователя
+        */
+        $ret=$this->mysqli->query("call get_member_projects(".intval($uid).");");
+        $ans=array();
+        if($ret->num_rows){
+            while($re=$ret->fetch_assoc()){
+                array_push($ans,$re);
+            }
+            $ret->free();
+            $this->clear_mysqli();
+        }
+        return $ans;
     }
     function create_team($name){
         /*
