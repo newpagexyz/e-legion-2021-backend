@@ -1,10 +1,10 @@
 # E-Legion hack backend 2021
 ## API
-    ### API v.1 
-        * [auth](#auth_api)
-        * [user info](#user_info_api)
-        * [edit user info](#edit_user_info_api)
-        * [get users](#get_users_api)
+### API v.1 
+* [auth](#auth_api)
+* [user info](#user_info_api)
+* [edit user info](#edit_user_info_api)
+* [get users](#get_users_api)
 ## API v.1
 #### <a name="auth_api"> site/api/v1/auth
 fields:  
