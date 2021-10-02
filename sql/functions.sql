@@ -146,23 +146,6 @@ begin
 end;
 // 
 /*
-    Check auth
-*/
-create function check_auth(
-    EMAIL VARCHAR(70),
-    PASSWORD_val CHAR(64)
-)
-RETURNS int UNSIGNED
-begin
-    DECLARE UID INT UNSIGNED;
-    IF( EXISTS(SELECT id UID FROM `users` WHERE `email`=EMAIL AND `password`=SHA2(PASSWORD_val, 256)) ) 
-    THEN
-        return (SELECT id UID FROM `users` WHERE `email`=EMAIL AND `password`=SHA2(PASSWORD_val, 256) LIMIT 1);
-    END IF;
-    return 0;
-end;
-// 
-/*
     Add review
 */
 create function add_review(

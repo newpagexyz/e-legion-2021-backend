@@ -114,6 +114,24 @@
                     echo json_encode(array("error"=>array('status'=>true,"code"=>$Main->status,"description"=>$Main->status_text),"body"=>$ans));
                 }
             break;
+            case "create_team":
+                if(isset($_GET['name'])){
+                    $role=$_GET['name'];
+                }
+                else if(isset($_POST['name'])){
+                    $role=$_POST['name'];
+                }
+                else{
+                    echo json_encode(array("error"=>array('status'=>true,"code"=>400,"description"=>"Set team name")));
+                }
+                $ans=$Main->create_team($role);
+                if($ans){
+                    echo json_encode(array("error"=>array('status'=>false),"body"=>$ans));
+                }
+                else{
+                    echo json_encode(array("error"=>array('status'=>true,"code"=>$Main->status,"description"=>$Main->status_text),"body"=>$ans));
+                }
+            break;
             default:
             http_response_code(400);
             echo json_encode(array("error"=>array('status'=>true,"code"=>400,"description"=>"Incorrect method")));

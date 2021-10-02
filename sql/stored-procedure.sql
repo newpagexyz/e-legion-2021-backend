@@ -124,7 +124,7 @@ create procedure get_auth_token(
     IN `id_val`     INT UNSIGNED
 )
 begin
-    SELECT `token`,`oid` as `id`,`auth_time` FROM `tokens`;
+    SELECT `token`,`oid` as `id`,`auth_time` FROM `tokens` WHERE `id`=id_val;
 end;
 // 
 /*
@@ -135,5 +135,16 @@ create procedure get_id_by_token(
 )
 begin
     SELECT `oid` as `id` FROM `tokens` WHERE `token`=token_val; 
+end;
+// 
+/*
+    Check auth
+*/
+create procedure check_auth(
+    EMAIL_val VARCHAR(70),
+    PASSWORD_val CHAR(64)
+)
+begin
+    SELECT `id`,`email`,`password` FROM `users` WHERE (`email`=EMAIL_val AND `password`=SHA2(PASSWORD_val, 256)) LIMIT 1;
 end;
 // 

@@ -40,12 +40,14 @@ class Main{
         /*
             Вернёт токен и пароль в случае успеха
         */
-        $ret=$this->mysqli->query("select check_auth('".$this->mysqli->real_escape_string($email)."','".$this->mysqli->real_escape_string($password)."') as ans;");
+        $ret=$this->mysqli->query("call check_auth('".$this->mysqli->real_escape_string($email)."','".$this->mysqli->real_escape_string($password)."');");
         if($ret->num_rows){
             if($re=$ret->fetch_assoc()){
                 $ret->free();
-                if($re['ans']){
-                    $ret=$this->mysqli->query("select auth_user(".$re['ans'].") as ans;");
+                $this->clear_mysqli();
+                if($re['id']){
+                    $this->id=$re['id'];
+                    $ret=$this->mysqli->query("select auth_user(".$this->id.") as ans;");
                     if($re=$ret->fetch_assoc()){
                         $ret->free();
                         if($re['ans']){
@@ -53,7 +55,6 @@ class Main{
                             if($re=$ret->fetch_assoc()){
                                 $ret->free();
                                 $this->clear_mysqli();
-                                $this->id=$re['id'];
                                 return $re;
                             }
                         }
@@ -98,7 +99,7 @@ class Main{
     }
     function get_users($type_select=3){
         /*
-            Изменяет профиль пользователя
+            Вывести список пользователя
         */
         $ret=$this->mysqli->query("call get_users(".intval($type_select).");");
         if($ret->num_rows){
@@ -109,6 +110,19 @@ class Main{
             $ret->free();
             $this->clear_mysqli();
             return $ans;
+        }
+        return false;
+    }
+    function create_team($name){
+        /*
+            Изменяет профиль пользователя
+        */
+        $ret=$this->mysqli->query("SELECT create_team(".$this->id.",'".$name."')  as ans;");
+        if($ret->num_rows){
+            if($re=$ret->fetch_assoc()){
+                $ret->free();
+                return $re['ans'];
+            }
         }
         return false;
     }
